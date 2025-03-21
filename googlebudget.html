@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Google Sheet Data</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+
+  <h1>My Google Sheet Data</h1>
+  <table id="sheetData"></table>
+
+  <script>
+    const endpoint = 'https://script.google.com/macros/s/AKfycbzV1wQUiIzRg7Skt-xG-u41lx8fbV_wavQkLw5jEbrj2HUFxPmtvQP8HATpcr9qMq1Q/exec'; // Replace with your Apps Script Web App URL
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => {
+        const table = document.getElementById('sheetData');
+        table.innerHTML = '';
+
+        // Create table headers
+        let headerRow = document.createElement('tr');
+        data[0].forEach(headerText => {
+          let header = document.createElement('th');
+          header.textContent = headerText;
+          headerRow.appendChild(header);
+        });
+        table.appendChild(headerRow);
+
+        // Create data rows
+        data.slice(1).forEach(rowData => {
+          let row = document.createElement('tr');
+          rowData.forEach(cellData => {
+            let cell = document.createElement('td');
+            cell.textContent = cellData;
+            row.appendChild(cell);
+          });
+          table.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  </script>
+
+</body>
+</html>
